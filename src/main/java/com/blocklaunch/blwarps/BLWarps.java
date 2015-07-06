@@ -1,8 +1,8 @@
 package com.blocklaunch.blwarps;
 
 import com.blocklaunch.blwarps.commands.WarpCommandGenerator;
-import com.blocklaunch.blwarps.eventhandlers.PlayerChatEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerInteractBlockEventHandler;
+import com.blocklaunch.blwarps.eventhandlers.PlayerJoinEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.PlayerMoveEventHandler;
 import com.blocklaunch.blwarps.eventhandlers.SignChangeEventHandler;
 import com.blocklaunch.blwarps.managers.WarpBaseManager;
@@ -23,8 +23,8 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.event.Subscribe;
 import org.spongepowered.api.event.block.tileentity.SignChangeEvent;
-import org.spongepowered.api.event.entity.player.PlayerChatEvent;
 import org.spongepowered.api.event.entity.player.PlayerInteractBlockEvent;
+import org.spongepowered.api.event.entity.player.PlayerJoinEvent;
 import org.spongepowered.api.event.entity.player.PlayerMoveEvent;
 import org.spongepowered.api.event.state.PreInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
@@ -176,8 +176,9 @@ public class BLWarps {
 
     private void registerEventHandlers() {
         EventManager eventManager = this.game.getEventManager();
-        // Filter chat & replace warp names in chat w/ clickable links
-        eventManager.register(this, PlayerChatEvent.class, new PlayerChatEventHandler(this));
+
+        // Watch for players logging in - set custom WarpMessageSink
+        eventManager.register(this, PlayerJoinEvent.class, new PlayerJoinEventHandler(this));
         // Watch for players right-clicking warp signs
         eventManager.register(this, PlayerInteractBlockEvent.class, new PlayerInteractBlockEventHandler(this));
         // Watch for warp signs being created
