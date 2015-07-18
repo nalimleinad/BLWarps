@@ -1,7 +1,5 @@
 package com.blocklaunch.blwarps.runnables;
 
-import com.blocklaunch.blwarps.Util;
-
 import com.blocklaunch.blwarps.BLWarps;
 import com.blocklaunch.blwarps.Constants;
 import com.blocklaunch.blwarps.Warp;
@@ -26,7 +24,10 @@ public class WarpPlayerRunnable implements Runnable {
         if (!this.player.transferToWorld(this.warp.getWorld(), this.warp.getPosition())) {
             this.player.sendMessage(Constants.WORLD_NOT_FOUND_MSG);
         } else {
-            this.player.sendMessage(Texts.of(Constants.WARP_SUCCESS_MSG, Util.generateWarpText(this.warp), TextColors.GREEN, "."));
+            this.player.sendMessage(Texts.builder(Constants.WARP_SUCCESS_MSG).color(TextColors.GREEN)
+                    .append(this.plugin.getUtil().generateWarpText(this.warp))
+                    .build());
+
         }
 
         this.plugin.getWarpManager().warpCompleted(this.player);
